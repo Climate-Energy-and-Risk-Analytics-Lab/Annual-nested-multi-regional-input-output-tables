@@ -132,42 +132,6 @@ bash run_all.sh
 - **The 26 delivered tables** (and auxiliary artefacts) are deposited separately at
   \<repository / DOI — to complete\>.
 
-## Status / to complete before submission
-
-- [x] **`22_nesting.ipynb` reduced to a driver** — it no longer re-implements the
-      nesting; `nest_v31.py` is the single definition and the notebook calls it, so the
-      delivered files cannot depend on which of the two was run. The other pipeline
-      notebooks were copied whole (outputs stripped) and would still benefit from a light
-      exploratory-cell pass.
-- [x] **Distance function, code side** — the whole repository now uses the GDP-weighted
-      economic centroids, `gamma_sweep.py` included, so the γ-sensitivity is measured on
-      the same distance matrix as the delivered series.
-- [ ] **Descriptor: distance function.** Update the manuscript: Table 1 (move CAGDP2 +
-      county population centroids from *diagnostic* to *inputs*; drop the state-capital
-      row), the "Input data" paragraph, and the Code Availability parameter list, which
-      still says *state capitals*.
-- [x] **Final-demand destination allocator** — `Θ` replaces the breadth share `θ` in
-      `nest_v31.py`. `θ` keeps its other, unrelated role: the fallback column of `S` for
-      the one sector with no SAGDP2 counterpart (`T`, activities of households as
-      employers). The two must not be conflated.
-- [ ] **Re-deliver.** The 26 parquet files must be rebuilt: the ones produced before
-      2026-07-28 carry the old allocator.
-- [ ] **GAMS-free path.** Add a WiNDC GDX→CSV/parquet export step and deposit the export,
-      so the chain reproduces without a GAMS licence.
-- [x] **Figure-reproduction scripts** — every figure of the manuscript is now generated
-      here, under the name the `.tex` uses (see the table above).
-- [x] **Residual closure implemented** — `nest_v31.close_state_columns` was missing; the
-      module now applies it, reproducing the delivered 2017 file (13 of 1 887 columns
-      clipped, 0.7%, machine-precision closure).
-- [x] **LICENSE** — CC BY 4.0.
-- [ ] **Fill in** the dataset DOI, the `\todo` items of the descriptor, and the exact
-      library versions in the Code Availability section (they are pinned in
-      `requirements.txt`).
-- [ ] **Distance-decay slope.** `fig07_interstate_structure.py` measures an effective
-      elasticity of $-0.81$ on a fresh build against the $-0.85$ quoted in the manuscript;
-      the saved (pre-2026-07) build gives $-0.83$. The gap is the change of distance
-      reference points and disappears once the series is re-delivered.
-
 ## Citation
 
 \<add the dataset and article citations once the DOIs are minted\>
