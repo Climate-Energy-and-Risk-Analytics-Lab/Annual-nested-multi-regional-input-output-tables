@@ -178,4 +178,3 @@ If you use the tables, cite the dataset; if you use the code, cite the software 
 > Laroui, S. & Miura, Y. (2026). *Annual-nested-multi-regional-input-output-tables*
 > (v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21709961
 
-The accompanying data descriptor is *<article citation, once accepted>*.
