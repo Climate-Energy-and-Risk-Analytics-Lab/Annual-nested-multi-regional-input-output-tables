@@ -1,5 +1,10 @@
 # Nested multi-regional input–output tables resolving the United States by state
 
+[![Software DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21709961.svg)](https://doi.org/10.5281/zenodo.21709961)
+[![Dataset DOI](https://img.shields.io/badge/dataset-10.5281%2Fzenodo.21709830-1682D4)](https://doi.org/10.5281/zenodo.21709830)
+[![License: CC BY 4.0](https://img.shields.io/badge/license-CC%20BY%204.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
+[![Python 3.9](https://img.shields.io/badge/python-3.9-blue)](https://www.python.org/)
+
 Code that reconstructs **bilateral state-to-state trade flows** absent from the
 sub-national United States accounts and **nests** a state-resolved US block inside the
 OECD ICIO world table, producing 26 annual nested MRIOTs (`nested_mriot_<year>.parquet`,
@@ -11,24 +16,27 @@ raw inputs, plus the technical-validation routines.
 
 ## Method (five stages + closure)
 
-The construction is described in full in the data descriptor. In short:
+The construction is described in full in the data descriptor; the numbering below matches
+Figure 1 of the manuscript. In short:
 
 1. **Densification + identity verification** of the WiNDC sub-national accounts.
-2. **Bilateral reconstruction** — two-layer (trade + margin) doubly-constrained gravity
-   with RAS, driven by a great-circle distance matrix between the 51 **GDP-weighted
-   economic centroids** (built in `02_economic_centroids.ipynb`).
-3. **Allocation to uses + assembly** of the intra-US multi-regional table.
-4. **Common sector classification** — both sources aggregated onto 37 sectors.
-5. **Harmonisation** of the intra-US table to the US block of the global table.
-6. **Nesting + residual closure** into the OECD ICIO frame → the delivered files. Every
-   state column is closed through the value-added row (`nest_v31.close_state_columns`),
-   value added clipped at zero and the tax row absorbing the shortfall; no intermediate
-   or final-demand cell moves, so row totals are untouched.
+2. **Bilateral reconstruction, allocation to uses and assembly** of the intra-US
+   multi-regional table — two-layer (trade + margin) doubly-constrained gravity with RAS,
+   driven by a great-circle distance matrix between the 51 **GDP-weighted economic
+   centroids** (built in `02_economic_centroids.ipynb`), then allocated over intermediate
+   and final uses by the observed purchasers'-price absorption structure.
+3. **Common sector classification** — both sources aggregated onto 37 sectors.
+4. **Harmonisation** of the intra-US table to the US block of the global table.
+5. **Nesting** into the OECD ICIO frame → the delivered files.
    Intermediate flows between the world and the US, and the origin of exports for final
    use, are split by the **production share** `S` (BEA SAGDP2). The *destination* of final
    demand is split by **`Θ`**: the sub-national state × category final-demand shares for
    household consumption and investment, the state share of gross state product for
    government. The evidence for that choice is `validation/final_demand_allocator.ipynb`.
+
+**Residual closure.** Every state column is then closed through the value-added row
+(`nest_v31.close_state_columns`), value added clipped at zero and the tax row absorbing
+the shortfall; no intermediate or final-demand cell moves, so row totals are untouched.
 
 Default parameters (the delivered series): `γ_trade = γ_margin = 1`; biproportional
 tolerance `1e-8` (bilateral) / `1e-9` (harmonisation), 2000-iteration cap; feasibility
@@ -68,10 +76,11 @@ run_all.sh               execute the whole chain, raw → data/final/
 ## Figures of the data descriptor
 
 Every figure of the manuscript is produced by this repository, under the file name the
-LaTeX source expects. The scripts live in `pipeline/plots/`; everything they write —
-images and the tables behind them — goes to `figures/` at the repository root. The
-repository emits **no LaTeX**: numbers quoted in the manuscript are exported as CSV and
-JSON, and typesetting is left to the manuscript.
+LaTeX source expects, with one exception: the state portraits `figS2_*` of the
+Supplementary, for which no generating code survives. The scripts live in
+`pipeline/plots/`; everything they write — images and the tables behind them — goes to
+`figures/` at the repository root. The repository emits **no LaTeX**: numbers quoted in
+the manuscript are exported as CSV and JSON, and typesetting is left to the manuscript.
 
 ```bash
 sbatch pipeline/plots/run_figures.sbatch          # all of them, on a compute node
@@ -79,29 +88,40 @@ sbatch pipeline/plots/run_figures.sbatch fig05    # or just one
 python pipeline/plots/fig01_workflow.py           # the light ones run anywhere
 ```
 
-| script | figures |
-|---|---|
-| `fig01_workflow.py` | `figure1_workflow` |
-| `fig02_national_pool.py` | `national-pool marginal per commodity` |
-| `fig03_sagdp2_shares.py` | `fig3_sagdp2_shares` |
-| `fig04_nested_layout.py` | `fig1_nested_layout` |
-| `fig05_balance.py` | `fig5_balance` |
-| `fig06_checks_series.py` | `fig6_checks_series` (+ `checks_series.csv`) |
-| `fig07_interstate_structure.py` | `interstate_structure` |
-| `plot_source_diff_figure.py` | `fig_source_structural_distance`, `figS_source_diff_variants` |
-| `plot_harmonization_figures.py` | `oecd_windc_blocks_comparison`, `frobenius_relative_divergence_oecd_windc`, `vector_multipliers_harmonization`, `Z_multipliers_harmonization` (+ `harmonisation_multipliers.csv`) |
-| `plot_gamma_figures.py` | `gamma_sensitivity_extended`, `gamma_per_sector` |
-| `validation/final_demand_allocator.ipynb` | `fd_allocator_choice_2017`, `fd_allocator_bias`, `fd_gov_referents`, `fd_allocator_timeseries` (+ two supplementary, `fd_allocator_results_2017.json`, `fd_allocator_tradeoffs.csv`) |
-| `validation/cfs_faf_validation.ipynb` | `fig_cfs_faf_validation` (+ `cfs_faf_metrics_2017.csv`) |
-| `fig08_distance_variants.py` | `fig_distance_variants` (Supplementary; downloads its own Census inputs) |
+Script file names predate the final figure order, so the last column gives the figure
+number in the submitted manuscript.
+
+| script | output | ms. |
+|---|---|---|
+| `fig01_workflow.py` | `figure1_workflow` | 1 |
+| `fig02_national_pool.py` | `national-pool marginal per commodity` | 2 |
+| `fig03_sagdp2_shares.py` | `fig3_sagdp2_shares` | 3 |
+| `fig04_nested_layout.py` | `fig1_nested_layout` | 4 |
+| `fig06_checks_series.py` | `fig6_checks_series` (+ `checks_series.csv`) | 5 |
+| `plot_harmonization_figures.py` | `oecd_windc_blocks_comparison` | 6 |
+| `plot_source_diff_figure.py` | `fig_source_structural_distance` | 7 |
+| `plot_harmonization_figures.py` | `frobenius_relative_divergence_oecd_windc` | 8 |
+| `plot_harmonization_figures.py` | `vector_multipliers_harmonization` | 9 |
+| `plot_harmonization_figures.py` | `Z_multipliers_harmonization` (+ `harmonisation_multipliers.csv`) | 10 |
+| `fig05_balance.py` | `fig5_balance` | 11 |
+| `fig07_interstate_structure.py` | `interstate_structure` | 12 |
+| `validation/cfs_faf_validation.ipynb` | `fig_cfs_faf_validation` (+ `cfs_faf_metrics_2017.csv`) | 13 |
+| `plot_gamma_figures.py` | `gamma_sensitivity_extended` | 14 |
+| `validation/final_demand_allocator.ipynb` | `fd_allocator_timeseries` | 15 |
+| `validation/final_demand_allocator.ipynb` | `fd_allocator_choice_2017` | 16 |
+| `validation/final_demand_allocator.ipynb` | `fd_allocator_delivered_delta_2017` | 17 |
+
+Supplementary figures, same scripts: `figS_source_diff_variants`
+(`plot_source_diff_figure.py`), `gamma_per_sector` (`plot_gamma_figures.py`),
+`fd_allocator_bias` and `fd_gov_referents` (`final_demand_allocator.ipynb`, which also
+writes `fd_allocator_results_2017.json` and `fd_allocator_tradeoffs.csv`), and
+`fig_distance_variants` (`fig08_distance_variants.py`, which downloads its own Census
+inputs).
 
 `plot_gamma_figures.py` reads the sweep results versioned in
 `pipeline/plots/outputs_gamma/`; regenerating those from scratch means re-running
 `gamma_sensitivity_report.py`, `gamma_vs_observations.py` and `gamma_bilateral_grid.py`,
 which need a compute node with about 64 GB.
-
-The only manuscript figures **not** scripted here are the state portraits `figS2_*` of
-the Supplementary, for which no generating code survives.
 
 ## Setup
 
@@ -112,26 +132,50 @@ pip install -e .            # exposes `from paths import ROOT`
 ```
 
 Python 3.9. Reading the WiNDC `.gdx` (steps 10–11) additionally requires a **licensed
-GAMS** install; see `data/raw/DOWNLOAD.md`. On an HPC, `conda env create -f environment.yml`
-pins the compiled stack more reliably than pip alone.
+GAMS** install; see `data/raw/DOWNLOAD.md`. Every later stage runs from the intermediate
+files those steps write, so a GAMS licence is needed only to rebuild from the raw
+distribution. On an HPC, `conda env create -f environment.yml` pins the compiled stack
+more reliably than pip alone.
 
 ## Reproduce the series
 
 ```bash
-# 1. download the three third-party inputs  →  see data/raw/DOWNLOAD.md
+# 1. download the three primary inputs and the auxiliary benchmark and
+#    correspondence files  →  see data/raw/DOWNLOAD.md
 # 2. run the whole chain
 bash run_all.sh
 # → 26 files in data/final/nested_mriot_<year>.parquet
 ```
 
+The three primary inputs are the WiNDC v4.1 accounts, the OECD ICIO tables (2025 edition)
+and BEA table SAGDP2. The validation routines additionally need BEA table SAPCE1, the 2017
+Census of Governments, BEA table CAGDP2 and the 2020 Census centres of population; the
+hand-curated correspondence tables ship with the repository.
+
 ## Data
 
 - **Inputs** are third-party and not redistributed here — fetch them via
   [`data/raw/DOWNLOAD.md`](data/raw/DOWNLOAD.md). The only data shipped in git are the
-   hand-curated correspondence tables in `data/raw/correspondence/`.
-- **The 26 delivered tables** (and auxiliary artefacts) are deposited separately at
-  \<repository / DOI — to complete\>.
+  hand-curated correspondence tables in `data/raw/correspondence/`.
+- **The 26 delivered tables** are deposited at Zenodo:
+  [10.5281/zenodo.21709830](https://doi.org/10.5281/zenodo.21709830) (CC BY 4.0, 3.3 GB).
+- The bilateral structure inside the United States is a gravity-based **estimate**, not an
+  observation. Its accuracy, and what it costs downstream, are quantified in the Technical
+  Validation and the Usage Notes of the descriptor; read them before using state-pair
+  flows.
 
 ## Citation
 
-\<add the dataset and article citations once the DOIs are minted\>
+A machine-readable [`CITATION.cff`](CITATION.cff) is included, so GitHub's *Cite this
+repository* button returns the entries below.
+
+If you use the tables, cite the dataset; if you use the code, cite the software record.
+
+> Laroui, S. & Miura, Y. (2026). *Annual nested multi-regional input-output tables
+> resolving the United States by state from 1997 to 2022* [Data set]. Zenodo.
+> https://doi.org/10.5281/zenodo.21709830
+
+> Laroui, S. & Miura, Y. (2026). *Annual-nested-multi-regional-input-output-tables*
+> (v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21709961
+
+The accompanying data descriptor is *<article citation, once accepted>*.
