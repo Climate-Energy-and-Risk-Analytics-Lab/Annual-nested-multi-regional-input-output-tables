@@ -1,0 +1,92 @@
+cff-version: 1.2.0
+title: >-
+  Annual nested multi-regional input-output tables resolving the United States by state
+  from 1997 to 2022
+message: >-
+  If you use this software, please cite it using the metadata below. If you use the
+  delivered tables, cite the dataset record listed under "references" instead.
+type: software
+abstract: >-
+  Pipeline that reconstructs bilateral state-to-state trade flows absent from the
+  sub-national United States accounts, with a two-layer doubly constrained gravity model
+  calibrated by iterative proportional fitting, and nests a state-resolved United States
+  block inside the OECD inter-country input-output table. It produces twenty-six annual
+  nested multi-regional input-output tables, one per year from 1997 to 2022, covering 131
+  regions across a 37-sector classification.
+authors:
+  - family-names: Laroui
+    given-names: Sami
+    orcid: "https://orcid.org/0009-0004-5258-4105"
+    email: sami.laroui@polytechnique.org
+    affiliation: >-
+      Center for Urban Science and Progress, NYU Tandon School of Engineering, New York,
+      USA; Ecole polytechnique, Institut Polytechnique de Paris, Palaiseau, France
+  - family-names: Miura
+    given-names: Yuki
+    orcid: "https://orcid.org/0000-0001-6746-2419"
+    affiliation: >-
+      Department of Mechanical and Aerospace Engineering, NYU Tandon School of
+      Engineering, New York, USA
+version: v1.0.0
+date-released: "2026-07-30"
+doi: 10.5281/zenodo.21709961
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21709961
+    description: Archived software release v1.0.0
+  - type: doi
+    value: 10.5281/zenodo.21709830
+    description: The twenty-six delivered tables
+license: CC-BY-4.0
+url: "https://doi.org/10.5281/zenodo.21709961"
+repository-code: >-
+  https://github.com/Climate-Energy-and-Risk-Analytics-Lab/Annual-nested-multi-regional-input-output-tables
+keywords:
+  - input-output analysis
+  - multi-regional input-output
+  - MRIO
+  - United States
+  - inter-state trade
+  - gravity model
+  - supply-chain networks
+  - economic impact propagation
+references:
+  - type: data
+    title: >-
+      Annual nested multi-regional input-output tables resolving the United States by
+      state from 1997 to 2022
+    authors:
+      - family-names: Laroui
+        given-names: Sami
+        orcid: "https://orcid.org/0009-0004-5258-4105"
+      - family-names: Miura
+        given-names: Yuki
+        orcid: "https://orcid.org/0000-0001-6746-2419"
+    year: 2026
+    doi: 10.5281/zenodo.21709830
+    url: "https://doi.org/10.5281/zenodo.21709830"
+    license: CC-BY-4.0
+    publisher:
+      name: Zenodo
+
+# Once the data descriptor is accepted, uncomment the block below and fill in the
+# journal, volume, pages and DOI. GitHub and CFF-aware tools will then return the
+# article as the preferred citation, with the software record kept as a reference.
+#
+# preferred-citation:
+#   type: article
+#   title: >-
+#     Annual nested multi-regional input-output tables resolving the United States by
+#     state from 1997 to 2022
+#   authors:
+#     - family-names: Laroui
+#       given-names: Sami
+#       orcid: "https://orcid.org/0009-0004-5258-4105"
+#     - family-names: Miura
+#       given-names: Yuki
+#       orcid: "https://orcid.org/0000-0001-6746-2419"
+#   journal: Scientific Data
+#   year: 2026
+#   volume:
+#   start:
+#   doi:
